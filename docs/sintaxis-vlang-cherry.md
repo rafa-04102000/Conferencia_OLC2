@@ -2,8 +2,13 @@
 
 Esta guía describe la **sintaxis soportada por el intérprete de V-Lang Cherry** a partir de la gramática y de los archivos de prueba utilizados durante el desarrollo.
 
-> **Importante:** este documento corresponde al **intérprete**.  
-> El traductor a ARM64 no implementa necesariamente todas estas características y debe documentarse por separado.
+!!! warning "Diferencia entre intérprete y traductor"
+
+    Este documento describe la sintaxis admitida por el **intérprete**. El traductor a ARM64 no implementa necesariamente todas estas características; por eso, su alcance debe comprobarse por separado.
+
+!!! tip "Cómo usar esta referencia"
+
+    Busca una construcción en la tabla de contenido, prueba el ejemplo mínimo y después intégrala en un programa completo dentro de `fn main()`.
 
 ---
 
@@ -49,7 +54,7 @@ fn main()
 
 ---
 
-# 2. Comentarios
+## 2. Comentarios
 
 V-Lang Cherry permite comentarios de una línea:
 
@@ -68,7 +73,7 @@ También permite comentarios de bloque:
 
 ---
 
-# 3. Tipos de datos primitivos
+## 3. Tipos de datos primitivos
 
 Los tipos primitivos disponibles son:
 
@@ -92,7 +97,7 @@ fn main() {
 
 ---
 
-# 4. Declaración de variables
+## 4. Declaración de variables
 
 ## 4.1 Variable con tipo y valor
 
@@ -179,7 +184,7 @@ bandera bool = false
 
 ---
 
-# 5. Asignación de variables
+## 5. Asignación de variables
 
 Una variable existente puede recibir un nuevo valor:
 
@@ -204,7 +209,7 @@ numero = "Hola"
 
 ---
 
-# 6. Operadores de asignación
+## 6. Operadores de asignación
 
 Se encuentran soportadas las siguientes formas:
 
@@ -233,7 +238,7 @@ fn main() {
 
 ---
 
-# 7. Operaciones aritméticas
+## 7. Operaciones aritméticas
 
 Se pueden utilizar:
 
@@ -270,7 +275,7 @@ fn main() {
 
 ---
 
-# 8. Operadores relacionales
+## 8. Operadores relacionales
 
 Están disponibles:
 
@@ -297,7 +302,7 @@ fn main() {
 
 ---
 
-# 9. Operadores lógicos
+## 9. Operadores lógicos
 
 Se soportan:
 
@@ -330,7 +335,7 @@ if (10 == 10 && 5 == 5) || false {
 
 ---
 
-# 10. Impresión con `println`
+## 10. Impresión con `println`
 
 Se utiliza:
 
@@ -364,7 +369,7 @@ println()
 
 ---
 
-# 11. Punto y coma
+## 11. Punto y coma
 
 El punto y coma es **opcional**.
 
@@ -382,7 +387,7 @@ Por consistencia, los ejemplos de este repositorio pueden escribirse sin `;`.
 
 ---
 
-# 12. Valores nulos
+## 12. Valores nulos
 
 V-Lang Cherry **no implementa un literal `null` o `nil`**.
 
@@ -413,7 +418,7 @@ Por tanto, en este intérprete el manejo de errores por variables inexistentes *
 
 ---
 
-# 13. Condicional `if`
+## 13. Condicional `if`
 
 Sintaxis:
 
@@ -437,7 +442,7 @@ fn main() {
 
 ---
 
-# 14. `if`, `else if` y `else`
+## 14. `if`, `else if` y `else`
 
 ```v
 fn main() {
@@ -455,7 +460,7 @@ fn main() {
 
 ---
 
-# 15. Ciclo `for` como `while`
+## 15. Ciclo `for` como `while`
 
 V-Lang Cherry utiliza `for` para expresar un ciclo condicionado:
 
@@ -482,7 +487,7 @@ y salir mediante `break`.
 
 ---
 
-# 16. `for` clásico
+## 16. `for` clásico
 
 También está soportada la forma:
 
@@ -516,7 +521,7 @@ fn main() {
 
 ---
 
-# 17. `for` sobre slices
+## 17. `for` sobre slices
 
 La sintaxis utilizada es:
 
@@ -540,7 +545,7 @@ fn main() {
 
 ---
 
-# 18. `break`
+## 18. `break`
 
 Permite detener un ciclo:
 
@@ -562,7 +567,7 @@ También está reconocido dentro de `switch`.
 
 ---
 
-# 19. `continue`
+## 19. `continue`
 
 Permite saltar a la siguiente iteración:
 
@@ -584,7 +589,7 @@ fn main() {
 
 ---
 
-# 20. `switch`
+## 20. `switch`
 
 Sintaxis:
 
@@ -634,7 +639,7 @@ default:
 
 ---
 
-# 21. Slices
+## 21. Slices
 
 El intérprete soporta slices de una dimensión.
 
@@ -700,7 +705,7 @@ fn main() {
 
 ---
 
-# 22. `indexOf`
+## 22. `indexOf`
 
 Busca un elemento dentro de un slice.
 
@@ -738,7 +743,7 @@ indice int = indexOf(numeros, 100)
 
 ---
 
-# 23. `join`
+## 23. `join`
 
 Permite unir los elementos de un slice de cadenas.
 
@@ -780,7 +785,7 @@ Hola, mundo, desde, Go
 
 ---
 
-# 24. `append`
+## 24. `append`
 
 Permite agregar un elemento a un slice.
 
@@ -804,7 +809,7 @@ En esta versión se probó el agregado de **un elemento individual**.
 
 ---
 
-# 25. `len`
+## 25. `len`
 
 La palabra `len` está reconocida por la gramática:
 
@@ -824,7 +829,7 @@ Aunque existan pruebas parciales en archivos antiguos, no debe asumirse como una
 
 ---
 
-# 26. Slices o arrays multidimensionales
+## 26. Slices o arrays multidimensionales
 
 Los arrays/slices bidimensionales **no fueron implementados**.
 
@@ -857,7 +862,7 @@ Esta fue una de las funcionalidades pendientes del intérprete.
 
 ---
 
-# 27. Funciones
+## 27. Funciones
 
 Las funciones se declaran utilizando `fn`.
 
@@ -927,7 +932,7 @@ fn procesar(valores []int) {
 
 ---
 
-# 28. Funciones recursivas
+## 28. Funciones recursivas
 
 El intérprete permite llamadas recursivas.
 
@@ -966,7 +971,7 @@ fn fibonacci(n int) int {
 
 ---
 
-# 29. `return`
+## 29. `return`
 
 Puede retornar un valor:
 
@@ -993,7 +998,7 @@ fn mostrar() {
 
 ---
 
-# 30. Funciones nativas implementadas
+## 30. Funciones nativas implementadas
 
 ## `Atoi`
 
@@ -1055,7 +1060,7 @@ bool
 
 ---
 
-# 31. Structs
+## 31. Structs
 
 V-Lang Cherry implementa estructuras con propiedades primitivas.
 
@@ -1127,7 +1132,7 @@ En la versión probada los campos del `struct` son de tipos primitivos.
 
 ---
 
-# 32. Ejemplo completo
+## 32. Ejemplo completo
 
 ```v
 struct Persona {
@@ -1171,7 +1176,7 @@ fn main() {
 
 ---
 
-# 33. Resumen de características del intérprete
+## 33. Resumen de características del intérprete
 
 | Característica | Estado |
 |---|---|
@@ -1219,7 +1224,7 @@ fn main() {
 
 ---
 
-# 34. Recomendación
+## 34. Recomendación
 
 Para evitar confusiones, se recomienda escribir los programas con esta estructura:
 

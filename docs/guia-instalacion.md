@@ -2,11 +2,17 @@
 
 Esta guía resume el orden recomendado para preparar el entorno, generar el parser y lexer con ANTLR, ejecutar el backend, iniciar la interfaz gráfica con Fyne y, cuando corresponda, ensamblar y ejecutar el código ARM64 generado.
 
-> Basado en el `Manual_tecnico.md` del proyecto y en el flujo de trabajo mostrado para Ubuntu.
+!!! abstract "Qué aprenderás"
+
+    Prepararás el entorno, generarás el lexer y parser, ejecutarás el backend y la interfaz gráfica, y probarás el código ARM64 producido por el proyecto.
+
+!!! note "Alcance"
+
+    La guía se basa en el `Manual_tecnico.md` del proyecto y en el flujo de trabajo utilizado en Ubuntu.
 
 ---
 
-## 1. Requisitos principales
+### 1. Requisitos principales
 
 El proyecto utiliza:
 
@@ -21,9 +27,9 @@ El proyecto utiliza:
 
 ---
 
-# PARTE I — INSTALACIÓN
+## PARTE I — INSTALACIÓN
 
-## 2. Actualizar Ubuntu
+### 2. Actualizar Ubuntu
 
 ```bash
 sudo apt update
@@ -32,7 +38,7 @@ sudo apt upgrade -y
 
 ---
 
-## 3. Verificar Go
+### 3. Verificar Go
 
 Antes de instalar nada, comprobar si Go ya está disponible:
 
@@ -50,7 +56,7 @@ which go
 
 ---
 
-## 4. Instalar dependencias del sistema
+### 4. Instalar dependencias del sistema
 
 ```bash
 sudo apt install -y \
@@ -79,7 +85,7 @@ sudo apt install -y \
 
 ---
 
-## 5. Verificar Java
+### 5. Verificar Java
 
 ```bash
 java -version
@@ -89,7 +95,7 @@ ANTLR necesita Java porque ANTLR se distribuye como un archivo `.jar`.
 
 ---
 
-## 6. Descargar ANTLR4
+### 6. Descargar ANTLR4
 
 Crear una carpeta para almacenar ANTLR:
 
@@ -106,7 +112,7 @@ https://www.antlr.org/download/antlr-4.13.2-complete.jar
 
 ---
 
-## 7. Configurar ANTLR como comando
+### 7. Configurar ANTLR como comando
 
 Si se utiliza Zsh:
 
@@ -157,7 +163,7 @@ Si muestra la ayuda de ANTLR, la configuración funciona correctamente.
 
 ---
 
-## 8. Descargar las dependencias Go del backend
+### 8. Descargar las dependencias Go del backend
 
 Entrar al backend:
 
@@ -181,7 +187,7 @@ go mod tidy
 
 ---
 
-## 9. Descargar las dependencias Go del frontend
+### 9. Descargar las dependencias Go del frontend
 
 Regresar a la carpeta raíz y entrar a la interfaz gráfica:
 
@@ -205,9 +211,9 @@ Fyne no se instala normalmente mediante `apt`; el módulo de Fyne queda administ
 
 ---
 
-# PARTE II — GENERACIÓN DEL PARSER Y LEXER
+## PARTE II — GENERACIÓN DEL PARSER Y LEXER
 
-## 10. Archivo de gramática
+### 10. Archivo de gramática
 
 La gramática del lenguaje se encuentra en:
 
@@ -239,7 +245,7 @@ Gramatica.g4
 
 ---
 
-## 11. Generar parser, lexer, listener y visitor
+### 11. Generar parser, lexer, listener y visitor
 
 Desde la carpeta `Backend`:
 
@@ -265,7 +271,7 @@ Después del comando, la carpeta `parser/` contendrá varios archivos `.go` gene
 
 ---
 
-## 12. ¿Cuándo debo volver a ejecutar ANTLR?
+### 12. ¿Cuándo debo volver a ejecutar ANTLR?
 
 No es necesario ejecutar ANTLR cada vez que se inicia el proyecto.
 
@@ -294,9 +300,9 @@ Si `Gramatica.g4` no cambió y la carpeta `parser/` ya contiene los archivos gen
 
 ---
 
-# PARTE III — EJECUCIÓN DEL PROYECTO
+## PARTE III — EJECUCIÓN DEL PROYECTO
 
-## 13. Orden recomendado
+### 13. Orden recomendado
 
 El orden normal de trabajo es:
 
@@ -326,7 +332,7 @@ El orden normal de trabajo es:
 
 ---
 
-## 14. Iniciar el backend
+### 14. Iniciar el backend
 
 Abrir una terminal.
 
@@ -348,7 +354,7 @@ Mantener esta terminal abierta mientras se utiliza la aplicación.
 
 ---
 
-## 15. Iniciar el frontend
+### 15. Iniciar el frontend
 
 Abrir una segunda terminal.
 
@@ -368,9 +374,9 @@ Esto inicia la interfaz gráfica desarrollada con Fyne.
 
 ---
 
-# PARTE IV — FLUJO COMPLETO DEL PROYECTO
+## PARTE IV — FLUJO COMPLETO DEL PROYECTO
 
-## 16. Qué ocurre al ejecutar código
+### 16. Qué ocurre al ejecutar código
 
 De forma simplificada:
 
@@ -404,9 +410,9 @@ La gramática define qué construcciones del lenguaje son válidas. ANTLR genera
 
 ---
 
-# PARTE V — ARM64
+## PARTE V — ARM64
 
-## 17. Generar código ARM64
+### 17. Generar código ARM64
 
 Cuando el backend genera código ensamblador, el resultado puede ser un archivo como:
 
@@ -439,7 +445,7 @@ QEMU
 
 ---
 
-## 18. Ensamblar ARM64
+### 18. Ensamblar ARM64
 
 Desde la carpeta donde se encuentra `ARM64.s`:
 
@@ -451,7 +457,7 @@ Esto convierte el código ensamblador a un archivo objeto.
 
 ---
 
-## 19. Enlazar el archivo objeto
+### 19. Enlazar el archivo objeto
 
 ```bash
 aarch64-linux-gnu-ld -o ARM64.elf ARM64.o
@@ -465,7 +471,7 @@ ARM64.elf
 
 ---
 
-## 20. Ejecutar con QEMU
+### 20. Ejecutar con QEMU
 
 ```bash
 qemu-aarch64 ./ARM64.elf
@@ -477,9 +483,9 @@ Su función en este flujo es ejecutar un binario ARM64 en un equipo cuya arquite
 
 ---
 
-# PARTE VI — VERIFICACIÓN RÁPIDA
+## PARTE VI — VERIFICACIÓN RÁPIDA
 
-## 21. Comprobar todas las herramientas
+### 21. Comprobar todas las herramientas
 
 ```bash
 go version
@@ -494,7 +500,7 @@ Si todos los comandos responden correctamente, el entorno principal está prepar
 
 ---
 
-# PARTE VII — RESUMEN DE COMANDOS
+## PARTE VII — RESUMEN DE COMANDOS
 
 ## Primera instalación
 
@@ -572,7 +578,7 @@ qemu-aarch64 ./ARM64.elf
 
 ---
 
-# 22. Orden mental recomendado
+### 22. Orden mental recomendado
 
 La idea más importante es distinguir entre **instalación**, **generación** y **ejecución**:
 

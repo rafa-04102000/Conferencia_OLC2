@@ -1,13 +1,14 @@
-# Informe para presentación: memoria y sintaxis básica en ARM64 (AArch64)
+# ARM64/AArch64: memoria, registros e instrucciones
 
 Este documento explica cómo se organiza un archivo ensamblador ARM64, qué papel tienen `.data`, `.bss`, `.text` y `.global _start`, cómo aparecen el stack y el heap durante la ejecución, y cómo interpretar instrucciones y registros frecuentes.
 
-> Nota importante: `.data`, `.bss` y `.text` sí son secciones del archivo ensamblador.  
-> **Stack y heap no son secciones declaradas normalmente con `.stack` o `.heap`**. Son regiones de memoria que existen durante la ejecución del programa.
+!!! info "Distinción esencial"
+
+    `.data`, `.bss` y `.text` son secciones del archivo ensamblador. El **stack** y el **heap** no suelen declararse como `.stack` o `.heap`: son regiones de memoria disponibles durante la ejecución.
 
 ---
 
-# 1. Mapa general de memoria de un programa
+## 1. Mapa general de memoria de un programa
 
 Una forma sencilla de explicarlo es:
 
@@ -49,7 +50,7 @@ Este dibujo es conceptual. La distribución exacta depende del sistema operativo
 
 ---
 
-# 2. Sección `.data`
+## 2. Sección `.data`
 
 ## ¿Para qué sirve?
 
@@ -144,7 +145,7 @@ string    → .asciz
 
 ---
 
-# 3. Sección `.bss`
+## 3. Sección `.bss`
 
 ## ¿Para qué sirve?
 
@@ -211,7 +212,7 @@ texto:  .skip 64
 
 ---
 
-# 4. Sección `.text`
+## 4. Sección `.text`
 
 ## ¿Para qué sirve?
 
@@ -262,7 +263,7 @@ copiar_string:
 
 ---
 
-# 5. `.global _start`
+## 5. `.global _start`
 
 Una línea muy importante es:
 
@@ -319,7 +320,7 @@ y controlar el punto inicial.
 
 ---
 
-# 6. Stack
+## 6. Stack
 
 ## Qué es
 
@@ -344,7 +345,7 @@ es el **Stack Pointer**.
 
 ---
 
-# 7. Ejemplo real de stack frame
+## 7. Ejemplo real de stack frame
 
 Una secuencia típica es:
 
@@ -419,7 +420,7 @@ regresa a la dirección almacenada en `x30`.
 
 ---
 
-# 8. x29 y x30
+## 8. x29 y x30
 
 ## x29 — Frame Pointer
 
@@ -457,7 +458,7 @@ normalmente vuelve a la dirección guardada en `x30`.
 
 ---
 
-# 9. Heap
+## 9. Heap
 
 ## Qué es
 
@@ -509,7 +510,7 @@ En un compilador académico también se puede implementar un heap propio sobre u
 
 ---
 
-# 10. Stack vs Heap
+## 10. Stack vs Heap
 
 | Stack | Heap |
 |---|---|
@@ -522,7 +523,7 @@ En un compilador académico también se puede implementar un heap propio sobre u
 
 ---
 
-# 11. Registros generales x0–x30
+## 11. Registros generales x0–x30
 
 ARM64 dispone de registros generales de 64 bits:
 
@@ -553,7 +554,7 @@ el valor queda en los 32 bits bajos y la arquitectura pone a cero los bits super
 
 ---
 
-# 12. Registros x0–x7
+## 12. Registros x0–x7
 
 Según la convención de llamadas AArch64, los primeros argumentos de una función se pasan habitualmente en:
 
@@ -592,7 +593,7 @@ o en `w0` si el resultado es de 32 bits.
 
 ---
 
-# 13. x19–x28
+## 13. x19–x28
 
 Los registros:
 
@@ -618,7 +619,7 @@ Cuando se escribe código completamente conforme a la convención de llamadas, s
 
 ---
 
-# 14. `mov`
+## 14. `mov`
 
 `mov` copia o coloca un valor en un registro.
 
@@ -650,7 +651,7 @@ No mueve físicamente un registro; copia el valor.
 
 ---
 
-# 15. `ldr`
+## 15. `ldr`
 
 `ldr` significa:
 
@@ -690,7 +691,7 @@ Es decir, ahora se lee el contenido almacenado en esa dirección.
 
 ---
 
-# 16. Diferencia fundamental
+## 16. Diferencia fundamental
 
 Estas dos instrucciones no hacen lo mismo:
 
@@ -736,7 +737,7 @@ w1 → 42
 
 ---
 
-# 17. `str`
+## 17. `str`
 
 `str` significa:
 
@@ -760,7 +761,7 @@ memoria[x0] = w1
 
 ---
 
-# 18. `ldrb` y `strb`
+## 18. `ldrb` y `strb`
 
 La `b` significa:
 
@@ -786,7 +787,7 @@ Son muy útiles para recorrer strings carácter por carácter.
 
 ---
 
-# 19. `add` y `sub`
+## 19. `add` y `sub`
 
 Suma:
 
@@ -821,7 +822,7 @@ sub x0, x0, #1
 
 ---
 
-# 20. `mul`
+## 20. `mul`
 
 Multiplicación:
 
@@ -837,7 +838,7 @@ x0 = x1 * x2
 
 ---
 
-# 21. `sdiv`
+## 21. `sdiv`
 
 División con signo:
 
@@ -859,7 +860,7 @@ udiv
 
 ---
 
-# 22. `cmp`
+## 22. `cmp`
 
 Compara dos valores:
 
@@ -873,7 +874,7 @@ Luego puede utilizarse un salto condicional.
 
 ---
 
-# 23. Saltos condicionales
+## 23. Saltos condicionales
 
 Ejemplos frecuentes:
 
@@ -895,7 +896,7 @@ b.eq iguales
 
 ---
 
-# 24. `cbz` y `cbnz`
+## 24. `cbz` y `cbnz`
 
 `cbz`:
 
@@ -924,7 +925,7 @@ Compare and Branch if Not Zero
 
 ---
 
-# 25. `b`
+## 25. `b`
 
 Salto incondicional:
 
@@ -940,7 +941,7 @@ goto ciclo
 
 ---
 
-# 26. `bl`
+## 26. `bl`
 
 `bl` significa:
 
@@ -971,7 +972,7 @@ regresa al llamador.
 
 ---
 
-# 27. `ret`
+## 27. `ret`
 
 Finaliza una función y normalmente continúa desde la dirección almacenada en `x30`.
 
@@ -981,7 +982,7 @@ ret
 
 ---
 
-# 28. Registros de punto flotante
+## 28. Registros de punto flotante
 
 Para valores `f64` se utilizan registros:
 
@@ -1008,7 +1009,7 @@ d0 → valor f64
 
 ---
 
-# 29. `svc`
+## 29. `svc`
 
 `svc` significa:
 
@@ -1040,7 +1041,7 @@ transfiere el control al kernel.
 
 ---
 
-# 30. Ejemplo: syscall `write`
+## 30. Ejemplo: syscall `write`
 
 En Linux AArch64:
 
@@ -1084,7 +1085,7 @@ x8 = 64       → syscall write
 
 ---
 
-# 31. Ejemplo: syscall `exit`
+## 31. Ejemplo: syscall `exit`
 
 En Linux AArch64:
 
@@ -1108,9 +1109,8 @@ exit(0)
 
 ---
 
-# 32. Qué decir sobre las tablas de syscall
+## 32. Tablas de syscall
 
-Una buena explicación en la conferencia sería:
 
 > ARM64 define las instrucciones del procesador, pero servicios como imprimir, leer archivos, abrir archivos o terminar un proceso son proporcionados por el sistema operativo. En Linux AArch64 se consulta la tabla de system calls para conocer el número que debe colocarse en `x8` y los argumentos que deben ir en `x0`, `x1`, `x2`, etc.
 
@@ -1124,11 +1124,11 @@ brk       → 214
 mmap      → 222
 ```
 
-Los números de syscall dependen de la ABI/sistema operativo, por lo que deben consultarse en una tabla apropiada para Linux AArch64.
+Los números de syscall dependen de la ABI/sistema operativo, por lo que deben consultarse en una tabla apropiada para AArch64.
 
 ---
 
-# 33. Código mínimo completo para una captura de presentación
+## 33. Código Basico de ARM64/AArch64
 
 Este ejemplo muestra claramente:
 
@@ -1143,89 +1143,12 @@ Este ejemplo muestra claramente:
 - syscall `write`
 - syscall `exit`
 
-```asm
-// =========================================================
-// EJEMPLO BÁSICO ARM64 / AArch64
-// =========================================================
 
-// -------------------------
-// DATOS INICIALIZADOS
-// -------------------------
-.data
-
-numero:
-    .word 42
-
-mensaje:
-    .asciz "Hola desde ARM64\n"
-
-mensaje_len = . - mensaje
-
-
-// -------------------------
-// MEMORIA RESERVADA
-// -------------------------
-.bss
-
-buffer:
-    .skip 64
-
-
-// -------------------------
-// CÓDIGO EJECUTABLE
-// -------------------------
-.text
-.global _start
-
-
-// -------------------------
-// PUNTO DE ENTRADA
-// -------------------------
-_start:
-
-    // Cargar dirección de numero
-    ldr x0, =numero
-
-    // Cargar su contenido
-    ldr w1, [x0]
-
-    // Llamar una función
-    bl ejemplo_stack
-
-    // Imprimir mensaje
-    mov x0, #1
-    ldr x1, =mensaje
-    mov x2, #mensaje_len
-    mov x8, #64
-    svc #0
-
-    // Finalizar programa
-    mov x0, #0
-    mov x8, #93
-    svc #0
-
-
-// -------------------------
-// EJEMPLO DE STACK FRAME
-// -------------------------
-ejemplo_stack:
-
-    // Reservar stack frame y preservar FP/LR
-    stp x29, x30, [sp, #-16]!
-    mov x29, sp
-
-    // Ejemplo de operación local
-    mov x2, #10
-    add x3, x2, #5
-
-    // Restaurar stack
-    ldp x29, x30, [sp], #16
-    ret
-```
+![Ejemplo Basico](images/basico.png)
 
 ---
 
-# 34. Cómo compilar el ejemplo
+## 34. Cómo compilar el ejemplo
 
 ```bash
 aarch64-linux-gnu-as -o ejemplo.o ejemplo.s
@@ -1235,76 +1158,34 @@ qemu-aarch64 ./ejemplo.elf
 
 ---
 
-# 35. Ejemplo separado para explicar `.data`
+## 35. Ejemplo `.data`
 
-Código recomendado para captura:
-
-```asm
-.data
-
-entero:
-    .word 42
-
-decimal:
-    .double 3.14159
-
-activo:
-    .word 1
-
-mensaje:
-    .asciz "Hola, mundo!"
-```
-
-Texto para la diapositiva:
+![Ejemplo data](images/ejemplo_data.png)
 
 > **Sección `.data`**  
 > Contiene variables globales o estáticas con un valor inicial. El ensamblador coloca estos datos dentro del ejecutable para que ya estén disponibles al comenzar el programa.
 
 ---
 
-# 36. Ejemplo separado para explicar `.bss`
+## 36. Ejemplo `.bss`
 
-```asm
-.bss
-
-buffer:
-    .skip 128
-
-texto:
-    .skip 64
-
-resultado:
-    .skip 32
-```
-
-Texto para la diapositiva:
+![Ejemplo bss](images/ejemplo_bss.png)
 
 > **Sección `.bss`**  
 > Reserva memoria para variables o buffers cuyo contenido se generará durante la ejecución. Permite reservar espacio sin almacenar todos esos bytes como datos inicializados dentro del archivo ejecutable.
 
 ---
 
-# 37. Ejemplo separado para explicar `.text`
+## 37. Ejemplo `.text`
 
-```asm
-.text
-.global _start
-
-_start:
-
-    mov x0, #0
-    mov x8, #93
-    svc #0
-```
-
-Texto para la diapositiva:
+![Ejemplo text](images/ejemplo_text.png)
 
 > **Sección `.text`**  
 > Contiene las instrucciones ejecutables. `_start` representa el punto inicial del programa cuando se enlaza directamente como un ejecutable ARM64.
 
 ---
 
-# 38. Ejemplo separado para explicar stack
+## 38. Ejemplo separado para explicar stack
 
 ```asm
 mi_funcion:
@@ -1318,14 +1199,12 @@ mi_funcion:
     ret
 ```
 
-Texto para la diapositiva:
-
 > **Stack**  
 > Durante una llamada a función se puede reservar un stack frame para conservar registros, variables locales y la información necesaria para regresar al llamador. `sp` controla la posición actual de la pila; `x29` se utiliza convencionalmente como frame pointer y `x30` contiene la dirección de retorno.
 
 ---
 
-# 39. Ejemplo separado para explicar heap
+## 39. Ejemplo separado para explicar heap
 
 Para una introducción no recomiendo comenzar directamente con `mmap`, porque mezcla conceptos de arquitectura con servicios específicos de Linux.
 
@@ -1342,15 +1221,11 @@ Ejemplos:
 - buffers variables
 ```
 
-Y decir:
-
 > El heap no se define como `.data` o `.bss`. El programa solicita memoria en tiempo de ejecución mediante un allocator, un runtime o llamadas del sistema operativo como `brk` o `mmap`.
-
-Después, si se quiere profundizar, se puede enseñar un ejemplo con `mmap`.
 
 ---
 
-# 40. Cómo relacionarlo con un compilador
+## 40. Cómo relacionarlo con un compilador
 
 En un compilador, una tabla de símbolos podría decidir dónde almacenar cada elemento.
 
@@ -1388,9 +1263,9 @@ Esto es especialmente útil para explicar por qué el compilador debe conocer:
 
 ---
 
-# 41. Relación con tu traductor
+## 41. Relación con el traductor
 
-En el archivo ARM64 generado por tu proyecto ya se observa una división clara:
+En el archivo ARM64 generado por el proyecto ya se observa una división clara:
 
 ```text
 .data
@@ -1427,91 +1302,3 @@ Estas funciones forman una pequeña capa de runtime generada junto con el progra
 En la función de conversión de flotantes ya se utiliza un stack frame convencional mediante `sp`, `x29` y `x30`.
 
 ---
-
-# 42. Diapositiva: registros principales
-
-Una diapositiva compacta puede quedar así:
-
-| Registro | Uso habitual |
-|---|---|
-| `x0–x7` | argumentos y valores temporales |
-| `x0` | también valor de retorno |
-| `x8` | número de syscall en Linux AArch64 |
-| `x19–x28` | registros preservados por la función |
-| `x29` | frame pointer |
-| `x30` | link register / dirección de retorno |
-| `sp` | stack pointer |
-| `d0–d31` | datos de punto flotante/SIMD |
-
----
-
-# 43. Diapositiva: instrucciones principales
-
-| Instrucción | Idea |
-|---|---|
-| `mov` | copiar/colocar un valor |
-| `ldr` | cargar desde memoria o una dirección |
-| `str` | guardar en memoria |
-| `ldrb` | cargar un byte |
-| `strb` | guardar un byte |
-| `add` | sumar |
-| `sub` | restar |
-| `mul` | multiplicar |
-| `sdiv` | dividir con signo |
-| `cmp` | comparar |
-| `b` | salto |
-| `b.eq`, `b.ne`, etc. | salto condicional |
-| `bl` | llamar función |
-| `ret` | regresar de función |
-| `stp` | guardar dos registros |
-| `ldp` | recuperar dos registros |
-| `svc` | solicitar servicio al kernel |
-
----
-
-# 44. Guion oral breve
-
-Puedes explicar el archivo en este orden:
-
-> “Un programa ARM64 no es solamente una lista de instrucciones. Primero debemos decidir dónde estarán los datos. Los valores que ya conocemos se colocan normalmente en `.data`; los buffers o espacios que solo necesitamos reservar pueden ir en `.bss`; y el código ejecutable se coloca en `.text`. Con `.global _start` indicamos al enlazador cuál símbolo representa la entrada y `_start:` marca el lugar donde empieza nuestro programa.”
-
-Después:
-
-> “Además de estas secciones, durante la ejecución existen regiones como stack y heap. El stack es especialmente importante para las llamadas a funciones, porque allí podemos preservar registros, variables locales y direcciones de retorno. El heap se utiliza para memoria dinámica y no se declara simplemente como otra sección del ensamblador.”
-
-Y finalmente:
-
-> “ARM64 trabaja mucho con registros. `x0` a `x7` se utilizan para argumentos; `x29` suele ser el frame pointer; `x30` es el link register; `sp` apunta al stack y `x8`, en Linux AArch64, contiene el número de syscall cuando pedimos un servicio al kernel.”
-
----
-
-# 45. Idea clave para los estudiantes
-
-La relación conceptual que conviene recordar es:
-
-```text
-Lenguaje de alto nivel
-        ↓
-Compilador
-        ↓
-Decisiones de memoria
-        ├── .data
-        ├── .bss
-        ├── stack
-        └── heap
-        ↓
-Instrucciones ARM64
-        ↓
-.text
-        ↓
-Assembler
-        ↓
-Código objeto
-        ↓
-Linker
-        ↓
-Ejecutable ARM64
-        ↓
-CPU / QEMU
-```
-
