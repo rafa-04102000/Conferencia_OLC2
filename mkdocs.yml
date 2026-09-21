@@ -61,6 +61,7 @@ nav:
   - Inicio: index.md
   - Preparación del entorno: guia-instalacion.md
   - Lenguaje V-Lang Cherry: sintaxis-vlang-cherry.md
+  - ANTLR, CST y patrón Visitor: antlr-cst-visitor.md
   - ARM64 / AArch64: arm64-memoria-registros.md
 
 plugins:

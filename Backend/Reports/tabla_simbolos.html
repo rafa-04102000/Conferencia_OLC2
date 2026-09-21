@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de Símbolos</title>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Google Fonts - Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 20px 0 rgba(0,0,0,0.12), 0 7px 10px -5px rgba(0,0,0,0.2);
+        }
+        .logo-container {
+            margin-bottom: 1rem;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .card-panel {
+            border-radius: 10px;
+            box-shadow: 0 4px 20px 0 rgba(0,0,0,0.12), 0 7px 10px -5px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+        .team-member {
+            padding: 10px;
+            margin-bottom: 5px;
+            border-left: 4px solid #3a7bd5;
+            background-color: rgba(58, 123, 213, 0.05);
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        th {
+            font-weight: 500;
+            background-color: #3a7bd5 !important;
+            color: white !important;
+        }
+        tr:hover {
+            background-color: rgba(0, 210, 255, 0.05) !important;
+        }
+        .badge {
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .badge.variable {
+            background-color: #4caf50;
+            color: white;
+        }
+        .badge.function {
+            background-color: #ff9800;
+            color: white;
+        }
+        .badge.struct {
+            background-color: #9c27b0;
+            color: white;
+        }
+        .badge.slice {
+            background-color:rgb(248, 50, 24);
+            color: white;
+        }
+        .ambito-badge {
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: white;
+        }
+        .ambito-global {
+            background-color: #2196f3; /* Azul */
+        }
+        .ambito-main {
+            background-color: #673ab7; /* Morado */
+        }
+        .ambito-function {
+            background-color: #ff9800; /* Naranja */
+        }
+        .ambito-if {
+            background-color: #4caf50; /* Verde */
+        }
+        .ambito-switch {
+            background-color: #9c27b0; /* Morado oscuro */
+        }
+        .ambito-for {
+            background-color: #f44336; /* Rojo */
+        }
+        .ambito-forinslice {
+            background-color: #ff5722; /* Naranja oscuro */
+        }
+        .ambito-individualblock {
+            background-color: #607d8b; /* Gris azulado */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <div class="row valign-wrapper">
+                <div class="col s12 m2 center-align logo-container">
+                    <img src="../assets/tux.jpeg" alt="Logo" class="logo">
+                </div>
+                <div class="col s12 m10">
+                    <h2 class="white-text">Tabla de Símbolos</h2>
+                    <p class="flow-text white-text">Simbolos Declarados en la Ejecucion</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+	<!-- Tabla de símbolos -->
+        <div class="card-panel">
+            <div class="table-container">
+                <table class="highlight centered responsive-table">
+                    <thead>
+                        <tr>
+                            <th><i class="material-icons left">code</i> Identificador</th>
+                            <th><i class="material-icons left">category</i> Tipo</th>
+                            <th><i class="material-icons left">data_usage</i> Tipo de Dato</th>
+                            <th><i class="material-icons left">layers</i> Ámbito</th>
+                            <th><i class="material-icons left">pin_drop</i> Línea</th>
+                            <th><i class="material-icons left">view_column</i> Columna</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+<tr><td><strong>Persona</strong></td><td><span class='badge struct'>struct</span></td><td>struct</td><td><span class='ambito-badge ambito-global'>Global</span></td><td>1</td><td>0</td></tr>
+<tr><td><strong>Empleado</strong></td><td><span class='badge struct'>struct</span></td><td>struct</td><td><span class='ambito-badge ambito-global'>Global</span></td><td>8</td><td>0</td></tr>
+<tr><td><strong>puntos</strong></td><td><span class='badge variable'>variable</span></td><td>int</td><td><span class='ambito-badge ambito-main'>Main</span></td><td>15</td><td>4</td></tr>
+<tr><td><strong>nombre_persona1</strong></td><td><span class='badge variable'>variable</span></td><td>string</td><td><span class='ambito-badge ambito-main'>Main</span></td><td>59</td><td>4</td></tr>
+<tr><td><strong>edad_persona1</strong></td><td><span class='badge variable'>variable</span></td><td>int</td><td><span class='ambito-badge ambito-main'>Main</span></td><td>60</td><td>4</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="page-footer blue-grey lighten-5">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 center-align">
+                    <p class="blue-grey-text">Conferencia Compiladores 2</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar componentes de Materialize si es necesario
+        });
+    </script>
+</body>
+</html>
