@@ -10,7 +10,7 @@ import (
 	"github.com/antlr4-go/antlr/v4"
 )
 
-// Struct TIpo Visitor, seguirmeos con GramataicaVisitor porque BaseGramaticaVisitor me dio errores
+// Struct TIpo Visitor, seguirmeos con GramataicaVisitor
 type CodeGenVisitor struct {
 	parser.GramaticaVisitor
 	Env        *Env            // Entorno actual (para variables, funciones, etc.)
@@ -275,28 +275,8 @@ func (v *CodeGenVisitor) VisitProgram(ctx *parser.ProgramContext) interface{} {
 	v.Fun.WriteString("// 	| FUNCIONES |\n\n")                                                                 // Sección de Funciones
 
 	// Pongo la funcion para copiar strings
+	// limpia y verifica nulos
 	v.Fun.WriteString("\n//---- Función para copiar strings ----\n")
-	/*
-		copiar_string:
-		.loop:
-			ldrb w2, [x1], #1   // Carga un byte desde origen y avanza x1
-			strb w2, [x0], #1   // Guarda el byte en destino y avanza x0
-			cbnz w2, .loop      // Si el byte no es 0 (fin de string), continúa
-			ret                 // Regresa al punto donde fue llamada
-
-	*/
-
-	// Version anteriore
-	/*
-		v.Fun.WriteString("copiar_string:\n")
-		v.Fun.WriteString("\tloop:\n")
-		v.Fun.WriteString("\t\tldrb w2, [x1], #1   // Carga un byte desde origen y avanza x1\n")
-		v.Fun.WriteString("\t\tstrb w2, [x0], #1   // Guarda el byte en destino y avanza x0\n")
-		v.Fun.WriteString("\t\tcbnz w2, loop      // Si el byte no es 0 (fin de string), continúa\n")
-		v.Fun.WriteString("\t\tret                 // Regresa al punto donde fue llamada\n\n")
-	*/
-
-	// Nueva version, limpia y verifica nulos
 	v.Fun.WriteString("copiar_string:\n")
 	v.Fun.WriteString("\tmov x3, x0          // Guardar puntero original del destino\n")
 	v.Fun.WriteString("\tmov x9, x4          // Copiar tamaño para limpieza\n\n")
@@ -490,25 +470,6 @@ func (v *CodeGenVisitor) VisitProgram(ctx *parser.ProgramContext) interface{} {
 	// Funcion para el println
 	v.Fun.WriteString("\n//---- Función para imprimir en consola ----\n")
 
-	/*
-		println:
-		    mov x2, #0          // Contador de longitud
-		    mov x3, x1          // Guardar puntero original
-
-		count_loop:
-		    ldrb w4, [x3, x2]
-		    cbz w4, do_print
-		    add x2, x2, #1
-		    b count_loop
-
-		do_print:
-		    mov x0, #1          // stdout
-		    mov x8, #64         // syscall write
-		    svc #0
-		    ret
-
-	*/
-
 	v.Fun.WriteString("println:\n")
 	v.Fun.WriteString("\tmov x2, #0          // Contador de longitud\n")
 	v.Fun.WriteString("\tmov x3, x1          // Guardar puntero original\n")
@@ -682,7 +643,7 @@ func (v *CodeGenVisitor) VisitBlock(ctx *parser.BlockContext) interface{} {
 	cont := 0
 	var mainCtx parser.IMainfunctionContext = nil
 
-	// Registrar todo y buscar main (no ejecutarla aún) hasta valirdar
+	// Registrar todo y buscar main (no ejecutarla aún) hasta validar
 	for _, statement := range ctx.AllStatement() {
 		if v.Env.name == "Global" && statement.Mainfunction() != nil {
 			cont++
@@ -702,7 +663,7 @@ func (v *CodeGenVisitor) VisitBlock(ctx *parser.BlockContext) interface{} {
 			panic("Solo se permite una función 'main()'")
 		}
 
-		// Ejecutar main manualmente
+		// Ejecuto main si existe la funcion main
 		v.Visit(mainCtx)
 	}
 	return nil
@@ -1032,36 +993,6 @@ func (v *CodeGenVisitor) VisitPrint(ctx *parser.PrintContext) interface{} {
 			}
 		}
 	}
-
-	/*var parts []string
-	for _, expr := range ctx.PrintList().AllExpression() {
-		val := v.Visit(expr).(Attr)
-		if val.addrNUM != "" {
-			trimmed := strings.TrimSuffix(val.addrNUM, "\\n")
-			parts = append(parts, trimmed)
-		} else if val.addrID != "" {
-			// parts = append(parts, val.addrID)
-			if value, ok := v.Env.vars[val.addrID]; ok {
-				parts = append(parts, fmt.Sprintf("%v", value.Valor))
-			} else {
-				panic(fmt.Sprintf("Variable no declarada: %s", val.addrID))
-			}
-		}
-	}
-
-
-	content := strings.Join(parts, " ") + "\\n"
-	label := v.nextTemp()
-	v.Data.WriteString(fmt.Sprintf("%s: .asciz \"%s\"\n", label, content))
-
-
-	v.Code.WriteString(fmt.Sprintf("\tmov x0, #1 // stdout\n"))
-	v.Code.WriteString(fmt.Sprintf("\tldr x1, =%s\n", label))
-	v.Code.WriteString(fmt.Sprintf("\tmov x2, #%d\n", len(content)-1)) // quita \\n
-	v.Code.WriteString("\tmov x8, #64\n")
-	v.Code.WriteString("\tsvc #0\n\n")
-
-	*/
 
 	// armo la cadena de salida, necesito los temporales de las partes
 	// estes temporales ya los declare y estan en parts
@@ -4222,7 +4153,7 @@ func (v *CodeGenVisitor) VisitIntExpr(ctx *parser.IntExprContext) interface{} {
 
 func (v *CodeGenVisitor) VisitFloatExpr(ctx *parser.FloatExprContext) interface{} {
 	val := ctx.GetText()
-	// Podrías validar que realmente es un número
+	// Podríamos validar que realmente es un número
 	value, err := strconv.ParseFloat(val, 64)
 	if err != nil {
 		panic("Número flotante inválido: " + val)

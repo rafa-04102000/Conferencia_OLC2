@@ -1,0 +1,15 @@
+fn main() {
+    // OPeraciones aritméticas
+    a int = 20
+    b int = 5
+
+    suma int = a + b
+    resta int = a - b
+    multiplicacion int = a * b
+    division int = a / b
+
+    println("Suma:", suma)
+    println("Resta:", resta)
+    println("Multiplicacion:", multiplicacion)
+    println("Division:", division)
+}

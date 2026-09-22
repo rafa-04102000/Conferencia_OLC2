@@ -1,0 +1,26 @@
+struct Persona {
+    string nombre
+    int edad
+    f64 estatura
+    bool activo
+}
+
+fn main() {
+    persona = Persona {
+        nombre: "Ana",
+        edad: 25,
+        estatura: 1.68,
+        activo: true
+    }
+
+    println(persona)
+
+    println("Nombre:", persona.nombre)
+    println("Edad:", persona.edad)
+
+    persona.edad = 26
+    persona.nombre = "Ana Maria"
+
+    println("Edad nueva:", persona.edad)
+    println("Nombre nuevo:", persona.nombre)
+}

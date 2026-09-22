@@ -1,0 +1,9 @@
+fn main() {
+    numero int = 10
+
+    println("Antes:", numero)
+
+    numero = 50
+
+    println("Despues:", numero)
+}

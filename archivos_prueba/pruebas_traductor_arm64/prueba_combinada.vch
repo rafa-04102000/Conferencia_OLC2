@@ -1,0 +1,30 @@
+fn main() {
+    nombre string = "Cherry"
+    a int = 10
+    b int = 20
+
+    resultado int = a + b
+
+    println("Lenguaje:", nombre)
+    println("Resultado:", resultado)
+
+    esMayor bool = resultado > 20
+
+    if esMayor {
+        println("El resultado es mayor que 20")
+    } else {
+        println("El resultado no es mayor que 20")
+    }
+
+    contador int = 0
+    continuar bool = contador < 3
+
+    for continuar {
+        println("Iteracion:", contador)
+
+        contador++
+        continuar = contador < 3
+    }
+
+    println("Programa terminado")
+}

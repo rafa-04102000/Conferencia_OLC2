@@ -133,33 +133,73 @@ func runProgram(code string) (salida string, err bool) {
 	// si el panic se declara en otro lugar, el defer, se ejecutara y luego tambien se ejecutara lo de abajo
 
 	input := antlr.NewInputStream(code)
+	// lo combierte en un flujo de caracteres que ANTLR puede leer
 
 	// creo el error table para capturar los errores
 	errorTable := interpreter.NewErrorTable()
 
 	lexer := parser.NewGramaticaLexer(input)
+	// el lexer analiza los caracteres y va reconociendo tokens segun las relgas lexicas
+	// x int = 10, el lexer reconocera
+	// 	ID("x")
+	// INT_TYPE("int")
+	// ASSIGN("=")
+	// INT("10")
 
 	// creo el error listener para capturar los errores lexicos
 	lexer.RemoveErrorListeners() // eliminar los error listeners por defecto
 	lexer.AddErrorListener(errors.NewLexicalErrorListener(errorTable))
 
 	tokens := antlr.NewCommonTokenStream(lexer, 0)
-	p := parser.NewGramaticaParser(tokens)
-	p.RemoveErrorListeners()
-	p.AddErrorListener(errors.NewSyntaxErrorListener(errorTable))
-	p.SetErrorHandler(errors.NewCustomErrorStrategy())
+	// el lexer produce tokens uno por uno y COmmonTokenStream los va a almacenando y orgnizando para que el parser pueda cosumirlos comodamente.
+	// 	de esto
+	// 	Lexer
+	//   ↓
+	// token
+	// token
+	// token
+	// token
+	//   ↓
+	// CommonTokenStream
+	// a esto
+	// 	[ID:x]
+	// [TYPE:int]
+	// [ASSIGN:=]
+	// [INT:10]
+	// [EOF]
+	// tokens mas significativos
 
-	p.BuildParseTrees = true
-	tree := p.Program()
+	parser := parser.NewGramaticaParser(tokens)
+	// aca ya le pasamos los tokens al parser, los hace coincidir con las reglas sintacticas
 
-	eval := &interpreter.Visitor{
+	parser.RemoveErrorListeners()
+	parser.AddErrorListener(errors.NewSyntaxErrorListener(errorTable))
+	parser.SetErrorHandler(errors.NewCustomErrorStrategy())
+
+	parser.BuildParseTrees = true
+	// habilitamos la construccion del arbol
+	tree := parser.Program()
+	// Program corresponde a la regla inicial de la gramatica, es el punto de entrada del parser, es el nodo raiz del arbol
+	// el parser empieza desde Program y va bajando por las reglas sintacticas hasta llegar a los tokens, construyendo el arbol de derivacion
+	// en este caso construye el CST (Concrete Syntax Tree) que es el arbol de derivacion completo, con todos los nodos, incluyendo los tokens y las reglas sintacticas
+
+	interprete := &interpreter.Visitor{
 		Env:        interpreter.NewEnv(nil, "Global"), // entorno global
 		Console:    "",                                // consola para obtener los prints y mensajes
 		ErrorTable: errorTable,                        // tabla de errores
 	}
 
 	//ejecutar visitor
-	eval.Visit(tree)
+	interprete.Visit(tree)
+	// tree, antlr.ParseTree es una interfaz general que representa un nodo del arbol sintactico
+	// el Visit ya puede recibir esto:
+	// 	*parser.ProgramContext
+	// *parser.BlockContext
+	// *parser.StatementContext
+	// *parser.MainfunctionContext
+	// *parser.PrintContext
+	// *parser.OpExprContext
+	// ...
 
 	// si hay errores lexicos o sintacticos, los muestro
 	if len(errorTable.Errors) > 0 {
@@ -174,8 +214,8 @@ func runProgram(code string) (salida string, err bool) {
 		return
 	}
 
-	eval.ExportarTablaSimbolosHTML("Reports/tabla_simbolos.html")
-	salida = eval.Console
+	interprete.ExportarTablaSimbolosHTML("Reports/tabla_simbolos.html")
+	salida = interprete.Console
 	err = false
 	return
 }

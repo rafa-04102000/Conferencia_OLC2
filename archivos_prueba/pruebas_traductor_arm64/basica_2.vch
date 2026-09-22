@@ -1,0 +1,12 @@
+fn main() {
+    // Todos los tipos primitivos
+    entero int = 42
+    decimal f64 = 12.5
+    texto string = "Hola ARM64"
+    activo bool = true
+
+    println(entero)
+    println(decimal)
+    println(texto)
+    println(activo)
+}

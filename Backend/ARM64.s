@@ -6,19 +6,15 @@ newline: .asciz "\n"
 flt_100: .double 100.0
 str_true: .asciz "true"
 str_false: .asciz "false"
-tmp_1: .asciz "pedro sanchez"
-edad_pedro: .word 22
-tmp_2: .word 0
-edad_dentro_de_20_anios: .word 0
-tmp_4: .asciz " actualmente tiene "
-tmp_6: .asciz ", en 20 años tendra"
+numero: .word 20
+tmp_1: .word 0
+condicion: .word 0
+tmp_2: .asciz "Numero mayor que 10"
+tmp_3: .asciz "Fin"
 
 .bss
-pedrito: .skip 64
 salida_1: .skip 128
-tmp_3: .skip 64
-tmp_5: .skip 64
-tmp_7: .skip 64
+salida_2: .skip 128
 
 // ------------------------------------------------------------------------------
 // 	| CODIGO |
@@ -27,79 +23,42 @@ tmp_7: .skip 64
 .global _start
 
 _start:
-	// ---------- Declaración de variable: pedrito ----------
-
-	ldr x0, =pedrito	//destiono
-	ldr x1, =tmp_1	//origen
-	bl copiar_sin_limpiar
-
-	// ---------- Variable pedrito de tipo string declarada correctamente ----------
-
-	// ---------- Declaración de variable: edad_pedro ----------
+	// ---------- Declaración de variable: numero ----------
 
 
-	// ---------- Variable edad_pedro de tipo int declarada correctamente ----------
+	// ---------- Variable numero de tipo int declarada correctamente ----------
 
-	// ---------- Declaración de variable: edad_dentro_de_20_anios ----------
+	// ---------- Declaración de variable: condicion ----------
 
-	ldr x0, =edad_pedro
-	ldr w1, [x0]
-	add w2, w1, #20
-	ldr x1, =tmp_2
-	str w2, [x1]
+	ldr x1, =numero
+	ldr w1, [x1]
+	mov w2, #10
+	cmp w1, w2
+	cset w3, gt
+	ldr x2, =tmp_1
+	str w3, [x2]
 
-	ldr x0, =edad_dentro_de_20_anios
-	ldr x1, =tmp_2
+	ldr x0, =condicion
+	ldr x1, =tmp_1
 	ldr w2, [x1]
 	str w2, [x0]
 
 
-	// ---------- Variable edad_dentro_de_20_anios de tipo int declarada correctamente ----------
+	// ---------- Variable condicion de tipo bool declarada correctamente ----------
 
+	ldr x1, =condicion
+	ldr w1, [x1]
+	cmp w1, #0
+	b.eq label_1
 	// ---------- Print para salida_1 ----------
 
-	ldr x0, =tmp_3	// destino
-	mov x20, x0	// guardar puntero base
-	ldr x1, =pedrito	// origen
-	mov x4, #64	// Tamaño del buffer destino
-	bl copiar_sin_limpiar
-	mov x0, x20	// restaurar puntero base
-	bl advance_to_end
-	ldr x1, =tmp_4	// origen
-	bl copiar_sin_limpiar
-	ldr x2, =edad_pedro	// direccion del valor a comvertir
-	ldr w0, [x2]
-	ldr x1, =tmp_5	// destino de la cadena
-	bl int_to_str
-	ldr x2, =edad_dentro_de_20_anios	// direccion del valor a comvertir
-	ldr w0, [x2]
-	ldr x1, =tmp_7	// destino de la cadena
-	bl int_to_str
 
 	// --- Inicio Concatenacion cadena ---
 
 	ldr x0, =salida_1	// destino
 	mov x20, x0	// guardar puntero base
-	ldr x1, =tmp_3	// origen
+	ldr x1, =tmp_2	// origen
 	mov x4, #128	// Tamaño del buffer destino
-	bl copiar_sin_limpiar
-	mov x0, x20	// restaurar puntero base
-	bl advance_to_end
-	mov w6, #' '
-	strb w6, [x0], #1
-	ldr x1, =tmp_5	// origen
-	bl copiar_sin_limpiar
-	mov x0, x20	// restaurar puntero base
-	bl advance_to_end
-	mov w6, #' '
-	strb w6, [x0], #1
-	ldr x1, =tmp_6	// origen
-	bl copiar_sin_limpiar
-	mov x0, x20	// restaurar puntero base
-	bl advance_to_end
-	mov w6, #' '
-	strb w6, [x0], #1
-	ldr x1, =tmp_7	// origen
 	bl copiar_sin_limpiar
 	mov x0, x20	// restaurar puntero base
 	bl advance_to_end
@@ -111,6 +70,29 @@ _start:
 	// --- Fin Concatenacion de cadena ---
 
 	// ---------- Fin Print para salida_1 ----------
+
+	b label_1
+label_1:
+	// ---------- Print para salida_2 ----------
+
+
+	// --- Inicio Concatenacion cadena ---
+
+	ldr x0, =salida_2	// destino
+	mov x20, x0	// guardar puntero base
+	ldr x1, =tmp_3	// origen
+	mov x4, #128	// Tamaño del buffer destino
+	bl copiar_sin_limpiar
+	mov x0, x20	// restaurar puntero base
+	bl advance_to_end
+	ldr x1, =newline
+	bl copiar_sin_limpiar
+	mov x1, x20	// restaurar puntero base en x1
+	bl println
+
+	// --- Fin Concatenacion de cadena ---
+
+	// ---------- Fin Print para salida_2 ----------
 
 
 	// Salida del programa

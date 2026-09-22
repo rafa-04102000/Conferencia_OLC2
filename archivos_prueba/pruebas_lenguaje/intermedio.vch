@@ -1,0 +1,20 @@
+fn main() {
+    contador int = 0
+    limite int = 5
+
+    for contador < limite {
+        println("Contador:", contador)
+
+        if contador == 2 {
+            println("Estamos en dos")
+        } else if contador == 3 {
+            println("Estamos en tres")
+        } else {
+            println("Otro valor")
+        }
+
+        contador++
+    }
+
+    println("Fin:", contador)
+}

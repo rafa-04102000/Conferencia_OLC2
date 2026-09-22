@@ -1,0 +1,11 @@
+fn main() {
+    numero int = 10
+
+    println(numero)
+
+    numero++
+    println(numero)
+
+    numero--
+    println(numero)
+}

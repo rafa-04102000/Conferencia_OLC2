@@ -1,0 +1,14 @@
+fn main() {
+    contador int = 0
+    limite int = 5
+
+    condicion bool = contador < limite
+
+    for condicion {
+        println(contador)
+
+        contador++
+
+        condicion = contador < limite
+    }
+}

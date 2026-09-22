@@ -1,0 +1,10 @@
+fn main() {
+    numero int = 10
+    condicion bool = numero == 10
+
+    if condicion {
+        println("Igual a diez")
+    } else {
+        println("No es diez")
+    }
+}

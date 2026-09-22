@@ -1,0 +1,101 @@
+Ensambar, enlazar y ejecutar binario de arm64 en QEMU
+aarch64-linux-gnu-as -o ARM64.o ARM64.s
+aarch64-linux-gnu-ld -o ARM64.elf ARM64.o
+qemu-aarch64 ./ARM64.elf
+
+-------------------------------------------------------------------
+Acceso a direccion de memoria en GO
+-------------------------------------------------------------------
+x := 10
+
+p := &x // asigno la direccion de memoria
+// p es un puntero a x
+
+
+func main() {
+    x := 10
+    p := &x
+
+    fmt.Println(x)
+    fmt.Println(p)
+}
+
+
+*p // ve a la dirección almacenada en p y dame el valor que hay allí.
+
+&  → obtener dirección
+*  → acceder al valor apuntado
+
+x := 10
+p := &x
+
+*p = 50
+
+fmt.Println(x)
+
+-------------------------------------------------------------------
+Recargar terminal
+-------------------------------------------------------------------
+source ~/.zshrc
+source ~/.bashrc
+
+-------------------------------------------------------------------
+Info Punteros y Visitor
+-------------------------------------------------------------------
+&interpreter.Visitor{...} crea un valor Visitor y te devuelve un puntero a ese Visitor.
+parser.GramaticaVisitor embebido no crea el método Visit. El Visit(tree antlr.ParseTree) es un método que agregamos manualmente a Visitor y lo estás usando como punto de entrada/despachador.
+
+
+func (v *Visitor) Visit(tree antlr.ParseTree) Value {
+
+esta parte
+(v *Visitor)
+se llama receiver o receptor del método.
+significa, esta función pertenece al tipo Visitor, y v es un puntero al Visitor sobre el cual estoy trabajando.
+es lo que hace que podamos hacer, interprete.Visit(tree)
+eso en lugar de algo como Visit(interprete, tree)
+
+en java seria algo como esto:
+class Visitor {
+    Value Visit(ParseTree tree) {
+        ...
+    }
+}
+
+visitor.Visit(tree);
+
+es un metodo como tal, pero en Go no los declaro dentro del struct.
+Los declaro fuera y los relaciono con el tipo mediante el receiver.
+func (v *Visitor) Visit(...) {
+
+la v seria conceptualmente parecido a: this de java
+
+ por eso dentro del metodo puedo usar 
+v.Env
+v.Console
+v.ErrorTable
+v.VisitProgram(...)
+
+porque representa al visitor acutal
+
+“Declaro el método Visit perteneciente a Visitor. Dentro del método llamaré v al Visitor que recibió la llamada.”
+
+
+
+func NewEnv(parent *Env, name string) *Env
+esta parte parent *Env
+parent debe recibir una dirección que apunte a un Env. no estamos accediendo al valor como tal
+si no estoy indicando el tipo de dato
+&env con esto tengo el valor de tipo *Env para mi funcion
+
+& crea/obtiene el puntero; * en el tipo indica que la variable debe guardar un puntero; * delante de una variable puntero accede al valor apuntado.
+
+
+-------------------------------------------------------------------
+Correr el bash para automatizacion de ensamble, enlazdo y prueba en qemu
+-------------------------------------------------------------------
+// Le doy permisos de ejecucion
+chmod +x run_arm64.sh
+
+// Ejecuto con esto
+./run_arm64.sh

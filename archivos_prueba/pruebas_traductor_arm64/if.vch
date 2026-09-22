@@ -1,0 +1,10 @@
+fn main() {
+    numero int = 20
+    condicion bool = numero > 10
+
+    if condicion {
+        println("Numero mayor que 10")
+    }
+
+    println("Fin")
+}

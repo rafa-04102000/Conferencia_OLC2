@@ -1,0 +1,29 @@
+fn sumar(a int, b int) int {
+    return a + b
+}
+
+fn clasificar(numero int) string {
+    if numero > 0 {
+        return "positivo"
+    } else if numero < 0 {
+        return "negativo"
+    } else {
+        return "cero"
+    }
+}
+
+fn main() {
+    resultado int = sumar(15, 25)
+
+    println("Resultado:", resultado)
+    println("Clasificacion:", clasificar(resultado))
+
+    switch resultado {
+    case 40:
+        println("El resultado es cuarenta")
+    case 20:
+        println("El resultado es veinte")
+    default:
+        println("Otro resultado")
+    }
+}

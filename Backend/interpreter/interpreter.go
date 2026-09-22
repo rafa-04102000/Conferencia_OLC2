@@ -81,11 +81,10 @@ type Env struct {
 
 func NewEnv(parent *Env, name string) *Env {
 	return &Env{
-		name:    name,
-		parent:  parent,
-		vars:    make(map[string]*Variable),
-		slicesL: make(map[string]*Slice),
-		//structS: make(map[string]*Struct),
+		name:      name,
+		parent:    parent,
+		vars:      make(map[string]*Variable),
+		slicesL:   make(map[string]*Slice),
 		structDcl: make(map[string]*StructDcl),
 		structIns: make(map[string]*StructInstance),
 		funcs:     make(map[string]*Function),
@@ -189,7 +188,6 @@ type ReturnSignal struct {
 var Return = ReturnSignal{Value: nil, info: "void"} // valor por defecto, si no se retorna nada
 
 // --------------------------------------------------------------------------------------------
-
 // --------------------------------------------------------------------------------------------
 //
 //	Struct con implementacion de Visitor
@@ -197,11 +195,14 @@ var Return = ReturnSignal{Value: nil, info: "void"} // valor por defecto, si no 
 // --------------------------------------------------------------------------------------------
 type Visitor struct {
 	parser.GramaticaVisitor
+	// parser.GramaticaVisitor Define los métodos que puede implementar un Visitor
+	// Embebo el struct Visitor con el parser.GrmaticaVisitor para que pueda implementar los métodos del Visitor
+	// Hace que el Visitor satisfaga o reutilice esa interfaz/contrato segun como este generado por ANTLR
 	Env *Env // entorno actual (en vez de memory)
-	// en el entorno estaran las variables y sus
+	// en el entorno estaran las variables, funciones, slices, structs, etc.
 	Console        string
 	ControlContext []string // para controlar el contexto de ejecucion, para ver si ando
-	// dentro de un switch, for, funcion
+	// dentro de un switch, for, funcion, armo una pila para saber si sigo entrando o saliendo de contextos
 	TablaSimb  []TablaSimbolos // tabla de simbolos, para guardar las variables, slices, structs y funciones
 	ErrorTable *ErrorTable     // tabla de errores, para guardar los errores lexicos y sintacticos
 }
@@ -733,6 +734,7 @@ func (v *Visitor) Visit(tree antlr.ParseTree) Value {
 		texto := tree.GetText()
 
 		if token, ok := tree.GetPayload().(antlr.Token); ok {
+			// esto es si es un token, entonces puedo obtener la linea y columna
 			v.ErrorTable.AddError(
 				token.GetLine(),
 				token.GetColumn(),
@@ -740,6 +742,7 @@ func (v *Visitor) Visit(tree antlr.ParseTree) Value {
 				SemanticError,
 			)
 		} else {
+			// esto es por si no he implementado el contecto, como *parse.BlockContext, *AlgunContext, etc. entonces no tiene linea ni columna, entonces pongo 0,0
 			v.ErrorTable.AddError(
 				0,
 				0,

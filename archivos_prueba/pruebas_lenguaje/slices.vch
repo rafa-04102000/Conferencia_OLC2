@@ -1,0 +1,28 @@
+fn main() {
+    numeros = []int {10, 20, 30, 40}
+
+    println("Slice original:", numeros)
+
+    for indice, valor in numeros {
+        println("Indice:", indice, "Valor:", valor)
+    }
+
+    primero int = numeros[0]
+    println("Primero:", primero)
+
+    numeros[1] = 200
+    println("Modificado:", numeros)
+
+    indice int = indexOf(numeros, 30)
+    println("Indice de 30:", indice)
+
+    numeros = append(numeros, 50)
+    println("Con append:", numeros)
+
+    palabras = []string {"Hola", "desde", "V-Lang", "Cherry"}
+
+    frase string = join(palabras, " ")
+    println(frase)
+
+
+}

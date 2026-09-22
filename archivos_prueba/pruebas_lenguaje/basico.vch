@@ -1,0 +1,16 @@
+fn main() {
+    numero int = 10
+    decimal f64 = 3.5
+    mensaje string = "Hola V-Lang Cherry"
+    activo bool = true
+
+    suma int = numero + 5
+    multiplicacion int = numero * 2
+
+    println("Numero:", numero)
+    println("Decimal:", decimal)
+    println("Mensaje:", mensaje)
+    println("Activo:", activo)
+    println("Suma:", suma)
+    println("Multiplicacion:", multiplicacion)
+}

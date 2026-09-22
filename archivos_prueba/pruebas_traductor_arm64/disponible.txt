@@ -1,0 +1,8 @@
+main
+declaration
+print
+if
+assignment
+for
+
+No usaría para probar CodeGen: slices, structs, funciones propias, switch, for in, ni el for clásico. Aunque algunas estructuras puedan existir en la gramática o en el intérprete, no están completadas en el flujo actual del generador.

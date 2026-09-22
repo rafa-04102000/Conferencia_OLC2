@@ -1,0 +1,5 @@
+fn main() {
+    numero int = 10
+
+    println(numero)
+}
